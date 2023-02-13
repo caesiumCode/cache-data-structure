@@ -3,6 +3,7 @@
 CacheBase::CacheBase(int capacity)
 :   m_capacity(capacity)
 {
+    m_size = 0;
     m_tracking = false;
     
     t_chrono        = std::chrono::microseconds(0);
@@ -14,4 +15,13 @@ CacheBase::CacheBase(int capacity)
 void CacheBase::track(bool tracking)
 {
     m_tracking = tracking;
+}
+
+void CacheBase::get_tracking(int w)
+{
+    std::cout << std::setw(w) << get_name();
+    std::cout << std::setw(w) << m_capacity;
+    std::cout << std::setw(w) << get_space();
+    std::cout << std::setw(w) << double(t_hits)/double(t_age);
+    std::cout << std::setw(w) << std::setw(w) << std::chrono::duration<double, std::micro>(t_chrono).count() / double(t_age) << std::endl;
 }

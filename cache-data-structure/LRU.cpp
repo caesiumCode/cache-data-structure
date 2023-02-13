@@ -22,11 +22,11 @@ LRU::~LRU()
     delete [] m_block;
 }
 
-void LRU::inserted(const std::string &key)
+void LRU::insert(const std::string &key)
 {
     if (m_tracking) t_age++;
     
-    auto CP1 = std::chrono::high_resolution_clock::now();
+    auto START = std::chrono::high_resolution_clock::now();
     
     std::unordered_map<std::string, ListNode*>::iterator hint = m_map.find(key);
     
@@ -40,7 +40,7 @@ void LRU::inserted(const std::string &key)
     {
         if (m_size < m_capacity)
         {
-            node = &m_back[m_size];
+            node = &m_block[m_size];
             m_size++;
         }
         else
@@ -49,6 +49,8 @@ void LRU::inserted(const std::string &key)
             
             if (m_tracking) t_deleted_ranks[100]++;
         }
+        
+        //t_deleted_ranks[100]++;;
     }
     else
     {
@@ -68,6 +70,8 @@ void LRU::inserted(const std::string &key)
     if (node->left)     node->left->right = node->right;
     if (node->right)    node->right->left = node->left;
     
+    m_map.erase(*node->key);
+    
     /*
      Attach the node
      */
@@ -81,9 +85,35 @@ void LRU::inserted(const std::string &key)
     if (m_size == 1) m_back = node;
     
     m_front = node;
-    m_size++;
     
-    auto CP2 = std::chrono::high_resolution_clock::now();
+    m_map[*node->key] = node;
     
-    if (m_tracking) t_chrono = CP2 - CP1;
+    auto END = std::chrono::high_resolution_clock::now();
+    
+    if (m_tracking) t_chrono += END - START;
+}
+
+int LRU::get_space()
+{
+    return m_capacity * 8 * (4 + 5);
+}
+
+std::string LRU::get_name()
+{
+    return "LRU";
+}
+
+std::string LRU::to_string()
+{
+    std::string str;
+    
+    ListNode* node = m_front;
+    
+    while (node)
+    {
+        str += *node->key + " ";
+        node = node->right;
+    }
+    
+    return str;
 }

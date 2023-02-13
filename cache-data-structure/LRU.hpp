@@ -3,22 +3,17 @@
 
 #include "CacheBase.hpp"
 
-struct ListNode
-{
-    std::string*    key;
-    void*           value;
-    
-    ListNode* left;
-    ListNode* right;
-};
-
-class LRU : protected CacheBase
+class LRU : public CacheBase
 {
 public:
     LRU(int capacity);
     ~LRU();
     
-    void inserted(const std::string& key);
+    void        insert(const std::string& key);
+    
+    int         get_space();
+    std::string get_name();
+    std::string to_string();
     
 private:
     ListNode* m_block;
