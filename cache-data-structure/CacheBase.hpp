@@ -62,7 +62,7 @@ class CacheBase
 public:
     CacheBase(int capacity);
     
-    void track(bool tracking);
+    void track_rank(bool tracking);
     
     virtual void        insert(const std::string& key)  = 0;
     virtual std::string to_string() = 0;
@@ -82,7 +82,7 @@ protected:
     const int   m_capacity;
     int         m_size;
     
-    bool        m_tracking;
+    bool        m_tracking_rank;
 };
 
 #endif /* CacheBase_hpp */

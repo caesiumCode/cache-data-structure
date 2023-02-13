@@ -4,7 +4,7 @@ CacheBase::CacheBase(int capacity)
 :   m_capacity(capacity)
 {
     m_size = 0;
-    m_tracking = false;
+    m_tracking_rank = false;
     
     t_chrono        = std::chrono::microseconds(0);
     t_age           = 0;
@@ -12,9 +12,9 @@ CacheBase::CacheBase(int capacity)
     t_deleted_ranks = std::vector<int>(101);
 }
 
-void CacheBase::track(bool tracking)
+void CacheBase::track_rank(bool tracking)
 {
-    m_tracking = tracking;
+    m_tracking_rank = tracking;
 }
 
 void CacheBase::get_tracking(int w)

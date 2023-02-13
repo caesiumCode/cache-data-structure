@@ -6,15 +6,15 @@ int main(int argc, const char * argv[])
     auto START = std::chrono::high_resolution_clock::now();
     
     std::string path = "/Users/stephen/Desktop/Research Assistant/splay stream/data/";
-    std::string dataset = "apw-parsed-cut";
+    std::string dataset = "newswire";
     
-    int n = 1 << 11;
+    int n = 1 << 12;
     
     LRU lru(n);
-    lru.track(true);
+    lru.track_rank(false);
     
     MTR mtr(n);
-    mtr.track(true);
+    mtr.track_rank(false);
     
     const int LINE_BUFFER_SIZE = 1 << 10;
     std::FILE* fp = std::fopen((path + dataset).c_str(), "r");
@@ -50,7 +50,7 @@ int main(int argc, const char * argv[])
     
     std::cout << "execution time\t" << std::chrono::duration<double>(END-START).count() << "s" << std::endl;
     
-    std::cout << mtr.to_string() << std::endl;
+    //std::cout << mtr.to_string() << std::endl;
     
     return 0;
 }

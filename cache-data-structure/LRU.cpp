@@ -24,7 +24,8 @@ LRU::~LRU()
 
 void LRU::insert(const std::string &key)
 {
-    if (m_tracking) t_age++;
+    // Tracking
+    t_age++;
     
     auto START = std::chrono::high_resolution_clock::now();
     
@@ -47,7 +48,8 @@ void LRU::insert(const std::string &key)
         {
             node = m_back;
             
-            if (m_tracking) t_deleted_ranks[100]++;
+            // Tracking
+            if (m_tracking_rank) t_deleted_ranks[100]++;
         }
         
         //t_deleted_ranks[100]++;;
@@ -56,7 +58,8 @@ void LRU::insert(const std::string &key)
     {
         node = hint->second;
         
-        if (m_tracking) t_hits++;
+        // Tracking
+        t_hits++;
     }
     
     /*
@@ -90,12 +93,13 @@ void LRU::insert(const std::string &key)
     
     auto END = std::chrono::high_resolution_clock::now();
     
-    if (m_tracking) t_chrono += END - START;
+    // Tracking
+    t_chrono += END - START;
 }
 
 int LRU::get_space()
 {
-    return m_capacity * 8 * (4 + 5);
+    return m_capacity * 8 * (4 + 3);
 }
 
 std::string LRU::get_name()
