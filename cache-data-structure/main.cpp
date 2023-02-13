@@ -7,10 +7,10 @@ int main(int argc, const char * argv[])
 {
     TimerMeasure START = Timer::now();
     
-    std::string path = "/Users/stephen/Desktop/Research Assistant/splay stream/data/";
-    std::string dataset = "apw-parsed";
+    std::string path = "/Users/jauds/Desktop/Datasets/ss/";
+    std::string dataset = "newswire";
     
-    int n = 1 << 10;
+    int n = 1 << 14;
     
     LRU lru(n);
     lru.track_rank(false);
@@ -46,7 +46,7 @@ int main(int argc, const char * argv[])
         
     std::fclose(fp);
     
-    int w = 12;
+    int w = 14;
     std::cout
     << std::setw(w) << "name"
     << std::setw(w) << "n"
