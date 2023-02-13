@@ -1,28 +1,28 @@
 #include "LRU.hpp"
 #include "MTR.hpp"
-#include "ST.hpp"
-#include "FC.hpp"
+#include "SplayStream.hpp"
+#include "FixedCache.hpp"
 
 int main(int argc, const char * argv[])
 {
     TimerMeasure START = Timer::now();
     
     std::string path = "/Users/jauds/Desktop/Datasets/ss/";
-    std::string dataset = "newswire";
+    std::string dataset = "apw-parsed";
     
-    int n = 1 << 14;
+    int n = 1 << 10;
     
     LRU lru(n);
     lru.track_rank(false);
     
+    SplayStream splay_stream(n);
+    splay_stream.track_rank(false);
+    
     MTR mtr(n);
     mtr.track_rank(false);
     
-    ST st(n);
-    st.track_rank(false);
-    
-    FC fc(n);
-    fc.track_rank(false);
+    FixedCache fixed_cache(n);
+    fixed_cache.track_rank(false);
     
     const int LINE_BUFFER_SIZE = 1 << 10;
     std::FILE* fp = std::fopen((path + dataset).c_str(), "r");
@@ -37,9 +37,9 @@ int main(int argc, const char * argv[])
         //std::cout << "INSERT\t" << key << std::endl;
         
         lru.insert(key);
+        splay_stream.insert(key);
         mtr.insert(key);
-        st.insert(key);
-        fc.insert(key);
+        fixed_cache.insert(key);
         
         //std::cout << st.to_string() << std::endl;
     }
@@ -54,9 +54,9 @@ int main(int argc, const char * argv[])
     << std::setw(w) << "hit rate"
     << std::setw(w) << "time(us)" << std::endl << std::endl;
     lru.get_tracking(w);
+    splay_stream.get_tracking(w);
     mtr.get_tracking(w);
-    st.get_tracking(w);
-    fc.get_tracking(w);
+    fixed_cache.get_tracking(w);
     
     TimerMeasure END = Timer::now();
     

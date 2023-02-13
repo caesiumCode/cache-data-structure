@@ -1,7 +1,7 @@
 #include "MTR.hpp"
 
 MTR::MTR(int capacity)
-: TreeCacheBase(capacity)
+: LeafQueueBase(capacity)
 {
     
 }

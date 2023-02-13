@@ -1,13 +1,13 @@
-#ifndef TreeCacheBase_hpp
-#define TreeCacheBase_hpp
+#ifndef LeafQueueBase_hpp
+#define LeafQueueBase_hpp
 
 #include "CacheBase.hpp"
 
-class TreeCacheBase : public CacheBase
+class LeafQueueBase : public CacheBase
 {
 public:
-    TreeCacheBase(int capacity);
-    ~TreeCacheBase();
+    LeafQueueBase(int capacity);
+    ~LeafQueueBase();
     
     void insert(const std::string& key);
     
@@ -41,4 +41,4 @@ protected:
     void        remove_leaf_queue(TreeNode* node);
 };
 
-#endif /* TreeCacheBase_hpp */
+#endif /* LeafQueueBase_hpp */

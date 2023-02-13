@@ -1,9 +1,9 @@
 #ifndef MTR_hpp
 #define MTR_hpp
 
-#include "TreeCacheBase.hpp"
+#include "LeafQueueBase.hpp"
 
-class MTR : public TreeCacheBase
+class MTR : public LeafQueueBase
 {
 public:
     MTR(int capacity);

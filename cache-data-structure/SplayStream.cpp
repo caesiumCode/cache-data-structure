@@ -1,12 +1,12 @@
-#include "ST.hpp"
+#include "SplayStream.hpp"
 
-ST::ST(int capacity)
-: TreeCacheBase(capacity)
+SplayStream::SplayStream(int capacity)
+: LeafQueueBase(capacity)
 {
     
 }
 
-void ST::rotate_up(TreeNode *x)
+void SplayStream::rotate_up(TreeNode *x)
 {
     TreeNode* y = x->parent;
     TreeNode* z = y->parent;
@@ -209,7 +209,7 @@ void ST::rotate_up(TreeNode *x)
     }
 }
 
-std::string ST::get_name()
+std::string SplayStream::get_name()
 {
-    return "Splay Tree";
+    return "Splay Stream";
 }

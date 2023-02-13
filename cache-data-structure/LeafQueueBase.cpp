@@ -1,6 +1,6 @@
-#include "TreeCacheBase.hpp"
+#include "LeafQueueBase.hpp"
 
-TreeCacheBase::TreeCacheBase(int capacity)
+LeafQueueBase::LeafQueueBase(int capacity)
 : CacheBase(capacity)
 {
     m_block = new TreeNode[m_capacity];
@@ -17,14 +17,14 @@ TreeCacheBase::TreeCacheBase(int capacity)
     }
 }
 
-TreeCacheBase::~TreeCacheBase()
+LeafQueueBase::~LeafQueueBase()
 {
     for (int i = 0; i < m_capacity; i++) delete m_block[i].key;
     
     delete [] m_block;
 }
 
-TreeNode* TreeCacheBase::find(const std::string &key)
+TreeNode* LeafQueueBase::find(const std::string &key)
 {
     TreeNode* node = m_root;
     
@@ -43,7 +43,7 @@ TreeNode* TreeCacheBase::find(const std::string &key)
 }
 
 
-void TreeCacheBase::insert(const std::string &key)
+void LeafQueueBase::insert(const std::string &key)
 {
     // Tracking
     t_age++;
@@ -64,7 +64,7 @@ void TreeCacheBase::insert(const std::string &key)
     t_chrono += END - START;
 }
 
-void TreeCacheBase::insert_miss(const std::string &key, TreeNode *node)
+void LeafQueueBase::insert_miss(const std::string &key, TreeNode *node)
 {
     TreeNode* new_node;
     
@@ -136,7 +136,7 @@ void TreeCacheBase::insert_miss(const std::string &key, TreeNode *node)
     }
 }
 
-void TreeCacheBase::insert_hit(const std::string &key, TreeNode *node)
+void LeafQueueBase::insert_hit(const std::string &key, TreeNode *node)
 {
     // Tracking
     t_hits++;
@@ -159,7 +159,7 @@ void TreeCacheBase::insert_hit(const std::string &key, TreeNode *node)
     move_to_root(node);
 }
 
-void TreeCacheBase::attach(TreeNode *node)
+void LeafQueueBase::attach(TreeNode *node)
 {
     TreeNode* parent    = node->parent;
     TreeNode* gparent   = node->parent->parent;
@@ -179,14 +179,14 @@ void TreeCacheBase::attach(TreeNode *node)
     if (gparent == nullptr) m_root = node;
 }
 
-void TreeCacheBase::move_to_root(TreeNode* x)
+void LeafQueueBase::move_to_root(TreeNode* x)
 {
     if (x->leaf) remove_leaf_queue(x);
     
     while (x != m_root) rotate_up(x);    
 }
 
-void TreeCacheBase::push_leaf_queue(TreeNode* node)
+void LeafQueueBase::push_leaf_queue(TreeNode* node)
 {
     node->leaf = true;
     node->left = nullptr;
@@ -211,7 +211,7 @@ void TreeCacheBase::push_leaf_queue(TreeNode* node)
     }
 }
 
-TreeNode* TreeCacheBase::pop_leaf_queue()
+TreeNode* LeafQueueBase::pop_leaf_queue()
 {
     if (m_leaf_queue_front == nullptr) return nullptr;
         
@@ -226,7 +226,7 @@ TreeNode* TreeCacheBase::pop_leaf_queue()
     return node;
 }
 
-void TreeCacheBase::remove_leaf_queue(TreeNode* node)
+void LeafQueueBase::remove_leaf_queue(TreeNode* node)
 {
     if (!node->leaf) return;
         
@@ -256,12 +256,12 @@ void TreeCacheBase::remove_leaf_queue(TreeNode* node)
     node->right = nullptr;
 }
 
-int TreeCacheBase::get_space()
+int LeafQueueBase::get_space()
 {
     return m_capacity * (8 * 5 + 1);
 }
 
-std::string TreeCacheBase::to_string()
+std::string LeafQueueBase::to_string()
 {
     return m_root->to_string("", true);
 }
