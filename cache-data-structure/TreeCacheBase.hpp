@@ -11,8 +11,8 @@ public:
     
     void insert(const std::string& key);
     
-    virtual int         get_space() = 0;
     virtual std::string get_name() = 0;
+    int         get_space();
     std::string to_string();
     
 protected:

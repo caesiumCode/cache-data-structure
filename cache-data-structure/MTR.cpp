@@ -73,12 +73,7 @@ void MTR::rotate_up(TreeNode *x)
     }
 }
 
-int MTR::get_space()
-{
-    return m_capacity * (8 * 5 + 1);
-}
-
 std::string MTR::get_name()
 {
-    return "MTR";
+    return "MTR Tree";
 }

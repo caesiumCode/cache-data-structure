@@ -1,12 +1,12 @@
-#ifndef MTR_hpp
-#define MTR_hpp
+#ifndef ST_hpp
+#define ST_hpp
 
 #include "TreeCacheBase.hpp"
 
-class MTR : public TreeCacheBase
+class ST : public TreeCacheBase
 {
 public:
-    MTR(int capacity);
+    ST(int capacity);
         
     std::string get_name();
     
@@ -14,4 +14,4 @@ protected:
     void rotate_up(TreeNode* node);
 };
 
-#endif /* MTR_hpp */
+#endif /* ST_hpp */

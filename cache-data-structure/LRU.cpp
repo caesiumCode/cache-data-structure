@@ -27,7 +27,7 @@ void LRU::insert(const std::string &key)
     // Tracking
     t_age++;
     
-    auto START = std::chrono::high_resolution_clock::now();
+    TimerMeasure START = Timer::now();
     
     std::unordered_map<std::string, ListNode*>::iterator hint = m_map.find(key);
     
@@ -50,9 +50,7 @@ void LRU::insert(const std::string &key)
             
             // Tracking
             if (m_tracking_rank) t_deleted_ranks[100]++;
-        }
-        
-        //t_deleted_ranks[100]++;;
+        }        
     }
     else
     {
@@ -91,7 +89,7 @@ void LRU::insert(const std::string &key)
     
     m_map[*node->key] = node;
     
-    auto END = std::chrono::high_resolution_clock::now();
+    TimerMeasure END = Timer::now();
     
     // Tracking
     t_chrono += END - START;
@@ -99,7 +97,11 @@ void LRU::insert(const std::string &key)
 
 int LRU::get_space()
 {
-    return m_capacity * 8 * (4 + 3);
+    int space_bucket = 0;
+    
+    for (int i = 0; i < m_map.bucket_count(); i++) space_bucket += m_map.bucket_size(i);
+    
+    return 8 * space_bucket + m_capacity * 8 * (4 + 3);
 }
 
 std::string LRU::get_name()

@@ -77,14 +77,12 @@ void TreeCacheBase::insert_miss(const std::string &key, TreeNode *node)
         // Increase rank of all the nodes that arrived after removed node
         if (m_tracking_rank)
         {
-            TimerMeasure CP1 = Timer::now();
-            
+            int deleted_rank = std::round(float(new_node->rank) / float(m_capacity) * 100);
+            t_deleted_ranks[deleted_rank]++;
+                        
             std::set<TreeNode*>::iterator found_it = t_timestamp_heap.find(new_node);
             for (auto it = found_it; it != t_timestamp_heap.end(); it++) (*it)->rank++;
             t_timestamp_heap.erase(new_node);
-            
-            TimerMeasure CP2 = Timer::now();
-            t_chrono -= CP2 - CP1;
         }
                 
         // If the removed node was the parent of the to-be-inserted node, use it directly
@@ -94,13 +92,7 @@ void TreeCacheBase::insert_miss(const std::string &key, TreeNode *node)
             new_node->timestamp = t_age;
             new_node->rank = 1;
             
-            if (m_tracking_rank)
-            {
-                TimerMeasure CP1 = Timer::now();
-                t_timestamp_heap.insert(new_node);
-                TimerMeasure CP2 = Timer::now();
-                t_chrono -= CP2 - CP1;
-            }
+            if (m_tracking_rank) t_timestamp_heap.insert(new_node);
             
             move_to_root(new_node);
             return;
@@ -119,15 +111,7 @@ void TreeCacheBase::insert_miss(const std::string &key, TreeNode *node)
         new_node = &m_block[m_size];
         m_size++;
         
-        if (m_tracking_rank)
-        {
-            TimerMeasure CP1 = Timer::now();
-            
-            for (auto it = t_timestamp_heap.begin(); it != t_timestamp_heap.end(); it++) (*it)->rank++;
-            
-            TimerMeasure CP2 = Timer::now();
-            t_chrono -= CP2 - CP1;
-        }
+        if (m_tracking_rank) for (auto it = t_timestamp_heap.begin(); it != t_timestamp_heap.end(); it++) (*it)->rank++;
     }
     
     *new_node->key = key;
@@ -138,13 +122,7 @@ void TreeCacheBase::insert_miss(const std::string &key, TreeNode *node)
     new_node->timestamp = t_age;
     new_node->rank = 1;
     
-    if (m_tracking_rank)
-    {
-        TimerMeasure CP1 = Timer::now();
-        t_timestamp_heap.insert(new_node);
-        TimerMeasure CP2 = Timer::now();
-        t_chrono -= CP2 - CP1;
-    }
+    if (m_tracking_rank) t_timestamp_heap.insert(new_node);
     
     if (m_root == nullptr)
     {
@@ -205,7 +183,7 @@ void TreeCacheBase::move_to_root(TreeNode* x)
 {
     if (x->leaf) remove_leaf_queue(x);
     
-    while (x != m_root) rotate_up(x);
+    while (x != m_root) rotate_up(x);    
 }
 
 void TreeCacheBase::push_leaf_queue(TreeNode* node)
@@ -276,6 +254,11 @@ void TreeCacheBase::remove_leaf_queue(TreeNode* node)
     node->leaf = false;
     node->left = nullptr;
     node->right = nullptr;
+}
+
+int TreeCacheBase::get_space()
+{
+    return m_capacity * (8 * 5 + 1);
 }
 
 std::string TreeCacheBase::to_string()
