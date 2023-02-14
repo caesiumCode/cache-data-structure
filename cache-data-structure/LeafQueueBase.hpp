@@ -36,8 +36,6 @@ struct TreeNode
     }
 };
 
-auto tree_node_comp = [](TreeNode* a, TreeNode* b) { return a->timestamp < b->timestamp; };
-
 
 
 
@@ -60,6 +58,7 @@ protected:
     TreeNode* m_leaf_queue_back;
     
     // Tracking
+    std::function<bool (TreeNode*, TreeNode*)> tree_node_comp = [](TreeNode* a, TreeNode* b) { return a->timestamp < b->timestamp; };
     std::set<TreeNode*, decltype(tree_node_comp)> t_timestamp_heap;
     
     // Move to root rule
