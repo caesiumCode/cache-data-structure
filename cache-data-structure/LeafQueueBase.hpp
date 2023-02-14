@@ -57,14 +57,15 @@ protected:
     TreeNode* m_leaf_queue_front;
     TreeNode* m_leaf_queue_back;
     
-    // Tracking
-    std::function<bool (TreeNode*, TreeNode*)> tree_node_comp = [](TreeNode* a, TreeNode* b) { return a->timestamp < b->timestamp; };
-    std::set<TreeNode*, decltype(tree_node_comp)> t_timestamp_heap;
-    
     // Rule
     virtual void move_heuristic(TreeNode* x) = 0;
     
 private:
+    // Tracking
+    static constexpr auto tree_node_comp = [](TreeNode* a, TreeNode* b) { return a->timestamp < b->timestamp; };
+    std::set<TreeNode*, decltype(tree_node_comp)> t_timestamp_heap;
+    
+    
     void        attach(TreeNode* node);
     TreeNode*   find(const std::string& key);
     
