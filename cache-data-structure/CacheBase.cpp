@@ -17,8 +17,9 @@ void CacheBase::track_rank(bool tracking)
     m_tracking_rank = tracking;
 }
 
-void CacheBase::get_tracking(int w)
+void CacheBase::get_tracking(std::string dataset_name, int w)
 {
+    std::cout << std::setw(w) << dataset_name;
     std::cout << std::setw(w) << get_name();
     std::cout << std::setw(w) << m_capacity;
     std::cout << std::setw(w) << get_space();

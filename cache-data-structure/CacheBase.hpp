@@ -29,7 +29,7 @@ public:
     virtual int         get_space() = 0;
     virtual std::string get_name() = 0;
     
-    void get_tracking(int w);
+    void get_tracking(std::string dataset_name, int w = 14);
     void get_ranking(std::string dataset_name);
     
 protected:

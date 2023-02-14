@@ -60,7 +60,7 @@ int main(int argc, const char * argv[])
     
     // Output
     if (track_ranking)  cache->get_ranking(dataset);
-    else                cache->get_tracking(14);
+    else                cache->get_tracking(dataset);
     
     return EXIT_SUCCESS;
 }
