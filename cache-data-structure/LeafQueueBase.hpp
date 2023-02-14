@@ -3,6 +3,44 @@
 
 #include "CacheBase.hpp"
 
+struct TreeNode
+{
+    std::string*    key;
+    void*           value;
+    
+    bool leaf;
+    
+    TreeNode* parent;
+    TreeNode* left;
+    TreeNode* right;
+    
+    // Tracking
+    int timestamp;
+    mutable int rank;
+    
+    // Display
+    std::string to_string(std::string indent, bool last)
+    {
+        std::string node_string = "+-" + *key + "(" + std::to_string(rank) + ")\n";
+        
+        if (!leaf)
+        {
+            std::string new_indent = indent + (last ? "   " : "|  ");
+            
+            if      (left != nullptr && right == nullptr)   return indent + node_string + left->to_string(new_indent, true);
+            else if (left == nullptr && right != nullptr)   return indent + node_string + right->to_string(new_indent, true);
+            else if (left != nullptr && right != nullptr)   return indent + node_string + left->to_string(new_indent, false) + right->to_string(new_indent, true);
+        }
+        
+        return indent + node_string;
+    }
+};
+
+auto tree_node_comp = [](TreeNode* a, TreeNode* b) { return a->timestamp < b->timestamp; };
+
+
+
+
 class LeafQueueBase : public CacheBase
 {
 public:

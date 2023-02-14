@@ -3,6 +3,16 @@
 
 #include "CacheBase.hpp"
 
+struct ListNode
+{
+    std::string*    key;
+    void*           value;
+    
+    ListNode* left;
+    ListNode* right;
+};
+
+
 class LRU : public CacheBase
 {
 public:

@@ -1,69 +1,57 @@
+#include <memory>
+
 #include "LRU.hpp"
 #include "MTR.hpp"
 #include "SplayStream.hpp"
 #include "FixedCache.hpp"
 
+/*
+ ./program <path> <dataset> <n> <model>
+ */
+
 int main(int argc, const char * argv[])
 {
-    TimerMeasure START = Timer::now();
+    if (argc != 5)
+    {
+        std::cout << "INVALID ARGUMENT: Expected 4 arguments, " << argc-1 << " were given" << std::endl;
+        return EXIT_FAILURE;
+    }
     
-    std::string path = "/Users/jauds/Desktop/Datasets/ss/";
-    std::string dataset = "apw-parsed";
+    // Set stream
+    std::string path    = std::string(argv[1]);
+    std::string dataset = std::string(argv[2]);
     
-    int n = 1 << 10;
-    
-    LRU lru(n);
-    lru.track_rank(false);
-    
-    SplayStream splay_stream(n);
-    splay_stream.track_rank(false);
-    
-    MTR mtr(n);
-    mtr.track_rank(false);
-    
-    FixedCache fixed_cache(n);
-    fixed_cache.track_rank(false);
-    
-    const int LINE_BUFFER_SIZE = 1 << 10;
+    const int   LINE_BUFFER_SIZE = 1 << 10;
+    char        line_buffer[LINE_BUFFER_SIZE];
     std::FILE* fp = std::fopen((path + dataset).c_str(), "r");
     
-    char line_buffer[LINE_BUFFER_SIZE];
-        
+    // Set cache
+    int         n       = std::atoi(argv[3]);
+    std::unique_ptr<CacheBase> cache;
+    
+    if      (std::string(argv[4]) == "lru") cache = std::make_unique<LRU>(n);
+    else if (std::string(argv[4]) == "st")  cache = std::make_unique<SplayStream>(n);
+    else if (std::string(argv[4]) == "mtr") cache = std::make_unique<MTR>(n);
+    else if (std::string(argv[4]) == "fc")  cache = std::make_unique<FixedCache>(n);
+    else
+    {
+        std::cout << "INVALID ARGUMENT: Unknown model " << argv[4] << std::endl;
+        return EXIT_FAILURE;
+    }
+    
+    // Test cache
     while (std::fgets(line_buffer, sizeof(line_buffer), fp))
     {
         std::string key(line_buffer);
         if (key.back() == '\n') key.pop_back();
         
-        //std::cout << "INSERT\t" << key << std::endl;
-        
-        lru.insert(key);
-        splay_stream.insert(key);
-        mtr.insert(key);
-        fixed_cache.insert(key);
-        
-        //std::cout << st.to_string() << std::endl;
+        cache->insert(key);
     }
         
     std::fclose(fp);
     
-    int w = 14;
-    std::cout
-    << std::setw(w) << "name"
-    << std::setw(w) << "n"
-    << std::setw(w) << "space"
-    << std::setw(w) << "hit rate"
-    << std::setw(w) << "time(us)" << std::endl << std::endl;
-    lru.get_tracking(w);
-    splay_stream.get_tracking(w);
-    mtr.get_tracking(w);
-    fixed_cache.get_tracking(w);
+    // Output
+    cache->get_tracking(14);
     
-    TimerMeasure END = Timer::now();
-    
-    std::cout << std::endl;
-    std::cout << "execution time\t" << std::chrono::duration<double>(END-START).count() << "s" << std::endl;
-    
-    //std::cout << mtr.to_string() << std::endl;
-    
-    return 0;
+    return EXIT_SUCCESS;
 }
