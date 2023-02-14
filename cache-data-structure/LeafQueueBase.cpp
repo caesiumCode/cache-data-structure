@@ -94,7 +94,7 @@ void LeafQueueBase::insert_miss(const std::string &key, TreeNode *node)
             
             if (m_tracking_rank) t_timestamp_heap.insert(new_node);
             
-            move_to_root(new_node);
+            move_heuristic(new_node);
             return;
         }
         
@@ -132,7 +132,7 @@ void LeafQueueBase::insert_miss(const std::string &key, TreeNode *node)
     else
     {
         attach(new_node);
-        move_to_root(new_node);
+        move_heuristic(new_node);
     }
 }
 
@@ -156,7 +156,7 @@ void LeafQueueBase::insert_hit(const std::string &key, TreeNode *node)
         t_timestamp_heap.insert(node);
     }
         
-    move_to_root(node);
+    move_heuristic(node);
 }
 
 void LeafQueueBase::attach(TreeNode *node)
@@ -177,13 +177,6 @@ void LeafQueueBase::attach(TreeNode *node)
     }
     
     if (gparent == nullptr) m_root = node;
-}
-
-void LeafQueueBase::move_to_root(TreeNode* x)
-{
-    if (x->leaf) remove_leaf_queue(x);
-    
-    while (x != m_root) rotate_up(x);    
 }
 
 void LeafQueueBase::push_leaf_queue(TreeNode* node)

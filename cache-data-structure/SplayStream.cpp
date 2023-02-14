@@ -6,6 +6,13 @@ SplayStream::SplayStream(int capacity)
     
 }
 
+void SplayStream::move_heuristic(TreeNode* node)
+{
+    if (node->leaf) remove_leaf_queue(node);
+    
+    while (node != m_root) rotate_up(node);
+}
+
 void SplayStream::rotate_up(TreeNode *x)
 {
     TreeNode* y = x->parent;

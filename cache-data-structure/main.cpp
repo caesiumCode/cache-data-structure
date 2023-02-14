@@ -1,8 +1,9 @@
 #include <memory>
 
 #include "LRU.hpp"
-#include "MTR.hpp"
 #include "SplayStream.hpp"
+#include "MTR.hpp"
+#include "SE.hpp"
 #include "FixedCache.hpp"
 
 /*
@@ -32,6 +33,7 @@ int main(int argc, const char * argv[])
     if      (std::string(argv[4]) == "lru") cache = std::make_unique<LRU>(n);
     else if (std::string(argv[4]) == "st")  cache = std::make_unique<SplayStream>(n);
     else if (std::string(argv[4]) == "mtr") cache = std::make_unique<MTR>(n);
+    else if (std::string(argv[4]) == "se")  cache = std::make_unique<SE>(n);
     else if (std::string(argv[4]) == "fc")  cache = std::make_unique<FixedCache>(n);
     else
     {

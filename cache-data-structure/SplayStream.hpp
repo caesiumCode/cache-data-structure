@@ -11,6 +11,9 @@ public:
     std::string get_name();
     
 protected:
+    void move_heuristic(TreeNode* node);
+    
+private:
     void rotate_up(TreeNode* node);
 };
 

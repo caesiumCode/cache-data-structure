@@ -1,12 +1,12 @@
-#ifndef MTR_hpp
-#define MTR_hpp
+#ifndef SE_hpp
+#define SE_hpp
 
 #include "LeafQueueBase.hpp"
 
-class MTR : public LeafQueueBase
+class SE : public LeafQueueBase
 {
 public:
-    MTR(int capacity);
+    SE(int capacity);
         
     std::string get_name();
     
@@ -17,4 +17,4 @@ private:
     void rotate_up(TreeNode* node);
 };
 
-#endif /* MTR_hpp */
+#endif /* SE_hpp */

@@ -1,19 +1,19 @@
-#include "MTR.hpp"
+#include "SE.hpp"
 
-MTR::MTR(int capacity)
+SE::SE(int capacity)
 : LeafQueueBase(capacity)
 {
     
 }
 
-void MTR::move_heuristic(TreeNode* node)
+void SE::move_heuristic(TreeNode* node)
 {
     if (node->leaf) remove_leaf_queue(node);
     
-    while (node != m_root) rotate_up(node);
+    if (node != m_root) rotate_up(node);
 }
 
-void MTR::rotate_up(TreeNode *x)
+void SE::rotate_up(TreeNode *x)
 {
     TreeNode* y         = x->parent;
     TreeNode* ancestor  = y->parent;
@@ -80,7 +80,7 @@ void MTR::rotate_up(TreeNode *x)
     }
 }
 
-std::string MTR::get_name()
+std::string SE::get_name()
 {
-    return "MTR Tree";
+    return "SE Tree";
 }
