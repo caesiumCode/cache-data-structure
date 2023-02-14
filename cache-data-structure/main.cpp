@@ -6,14 +6,14 @@
 #include "FixedCache.hpp"
 
 /*
- ./program <path> <dataset> <n> <model>
+ ./program <path> <dataset> <n> <model> <ranking>
  */
 
 int main(int argc, const char * argv[])
 {
-    if (argc != 5)
+    if (argc != 6)
     {
-        std::cout << "INVALID ARGUMENT: Expected 4 arguments, " << argc-1 << " were given" << std::endl;
+        std::cout << "INVALID ARGUMENT: Expected 5 arguments, " << argc-1 << " were given" << std::endl;
         return EXIT_FAILURE;
     }
     
@@ -39,6 +39,12 @@ int main(int argc, const char * argv[])
         return EXIT_FAILURE;
     }
     
+    bool track_ranking;
+    if (std::atoi(argv[5]) == 0)    track_ranking = false;
+    else                            track_ranking = true;
+    
+    cache->track_rank(track_ranking);
+    
     // Test cache
     while (std::fgets(line_buffer, sizeof(line_buffer), fp))
     {
@@ -51,7 +57,8 @@ int main(int argc, const char * argv[])
     std::fclose(fp);
     
     // Output
-    cache->get_tracking(14);
+    if (track_ranking)  cache->get_ranking(dataset);
+    else                cache->get_tracking(14);
     
     return EXIT_SUCCESS;
 }

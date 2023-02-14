@@ -28,6 +28,7 @@ public:
     virtual std::string get_name() = 0;
     
     void get_tracking(int w);
+    void get_ranking(std::string dataset_name);
     
 protected:
     const int   m_capacity;

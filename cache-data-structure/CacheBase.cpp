@@ -25,3 +25,13 @@ void CacheBase::get_tracking(int w)
     std::cout << std::setw(w) << double(t_hits)/double(t_age);
     std::cout << std::setw(w) << std::setw(w) << std::chrono::duration<double, std::micro>(t_chrono).count() / double(t_age) << std::endl;
 }
+
+void CacheBase::get_ranking(std::string dataset_name)
+{
+    std::cout << dataset_name << " ";
+    std::cout << get_name() << " ";
+    std::cout << m_capacity << " ";
+    
+    for (long count : t_deleted_ranks) std::cout << count << " ";
+    std::cout << std::endl;
+}
