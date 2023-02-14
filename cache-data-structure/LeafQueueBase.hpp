@@ -52,30 +52,30 @@ public:
     std::string to_string();
     
 protected:
-    TreeNode* m_block;
     TreeNode* m_root;
-    TreeNode* m_leaf_queue_front;
-    TreeNode* m_leaf_queue_back;
     
     // Rule
     virtual void move_heuristic(TreeNode* x) = 0;
     
+    // Leaf Queue interface
+    void        push_leaf_queue(TreeNode* node);
+    TreeNode*   pop_leaf_queue();
+    void        remove_leaf_queue(TreeNode* node);
+    
 private:
+    TreeNode* m_block;
+    TreeNode* m_leaf_queue_front;
+    TreeNode* m_leaf_queue_back;
+    
     // Tracking
-    static constexpr auto tree_node_comp = [](TreeNode* a, TreeNode* b) { return a->timestamp < b->timestamp; };
-    std::set<TreeNode*, decltype(tree_node_comp)> t_timestamp_heap;
+    std::set<TreeNode*, std::function<bool(TreeNode*, TreeNode*)>> t_timestamp_heap;
     
-    
+    // BST operations
     void        attach(TreeNode* node);
     TreeNode*   find(const std::string& key);
     
     void        insert_hit(const std::string& key, TreeNode* node);
     void        insert_miss(const std::string& key, TreeNode* node);
-    
-protected:
-    void        push_leaf_queue(TreeNode* node);
-    TreeNode*   pop_leaf_queue();
-    void        remove_leaf_queue(TreeNode* node);
 };
 
 #endif /* LeafQueueBase_hpp */

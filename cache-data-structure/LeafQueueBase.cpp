@@ -15,6 +15,10 @@ LeafQueueBase::LeafQueueBase(int capacity)
         m_block[i].left     = nullptr;
         m_block[i].right    = nullptr;
     }
+    
+    // Tracking
+    auto tree_node_comp = [](TreeNode* a, TreeNode* b) { return a->timestamp < b->timestamp; };
+    t_timestamp_heap = std::set<TreeNode*, std::function<bool(TreeNode*, TreeNode*)>>(tree_node_comp);
 }
 
 LeafQueueBase::~LeafQueueBase()

@@ -11,6 +11,7 @@
 #include <iostream>
 #include <set>
 #include <cmath>
+#include <functional>
 
 using Timer         = std::chrono::high_resolution_clock;
 using TimerMeasure  = std::chrono::time_point<Timer>;
